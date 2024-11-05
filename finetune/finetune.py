@@ -150,42 +150,7 @@ def setup(
         loggers=logger,
     )
 
-    if sampling_strategy == "random":
-        sampler = RandomSampler(search_space=search_space, seed=seed)
-    elif sampling_strategy == "grid":
-        sampler = FixGridSampler(search_space=search_space, seed=seed)
-    elif sampling_strategy == "grid-params":
-        sampler = FixParamGridSampler(
-            search_space=search_space, seed=42, n_trials=n_trials
-        )
-    elif sampling_strategy == "calibrate":
-        sampler = CalibFixGridSampler(
-            checkpoint_dir=checkpoint_dir,
-            search_space_type=search_space_type,
-            search_space=search_space,
-            seed=seed,
-        )
-    elif sampling_strategy == "importance-random":
-        sampler = ImportanceSampler(
-            os.path.join(checkpoint_dir, "sorted_ids.pkl"), search_space, seed=seed
-        )
-    elif sampling_strategy == "importance-grid-params":
-        sampler = ImportanceParamGridSampler(
-            sorted_ids_path=os.path.join(checkpoint_dir, "sorted_ids.pkl"),
-            search_space=search_space,
-            seed=42,
-            n_trials=n_trials,
-        )
-    elif sampling_strategy == "importance-calibrate":
-        sampler = ImportanceCalibFixGridSampler(
-            objective=objective,
-            importance_objective=importance_objective,
-            sorted_ids_path=os.path.join(checkpoint_dir, "sorted_ids.pkl"),
-            checkpoint_dir=checkpoint_dir,
-            search_space_type=search_space_type,
-            search_space=search_space,
-            seed=seed,
-        )
+    sampler = RandomSampler(search_space=search_space, seed=seed)
 
     if train_strategy == "sandwich":
         strategy = SandwichStrategy(
